@@ -73,24 +73,33 @@ func readConfigFromFlag(prefix string, config interface{}) {
 	typeOfConfig := values.Type()
 	for i := 0; i < values.NumField(); i++ {
 		name := prefix + strcase.ToKebab(typeOfConfig.Field(i).Name)
-		v, ok := flagValues[name]
-		if ok {
-			switch typeOfConfig.Field(i).Type.Kind() {
-			case reflect.String:
+		switch typeOfConfig.Field(i).Type.Kind() {
+		case reflect.String:
+			v, ok := flagValues[name]
+			if ok {
 				value := v.(*string)
 				values.Field(i).SetString(*value)
-			case reflect.Int:
+			}
+		case reflect.Int:
+			v, ok := flagValues[name]
+			if ok {
 				value := v.(*int)
 				values.Field(i).SetInt(int64(*value))
-			case reflect.Float64:
+			}
+		case reflect.Float64:
+			v, ok := flagValues[name]
+			if ok {
 				value := v.(*float64)
 				values.Field(i).SetFloat(*value)
-			case reflect.Bool:
+			}
+		case reflect.Bool:
+			v, ok := flagValues[name]
+			if ok {
 				value := v.(*bool)
 				values.Field(i).SetBool(*value)
-			case reflect.Struct:
-				readConfigFromFlag(name + "-", values.Field(i).Addr().Interface())
 			}
+		case reflect.Struct:
+			readConfigFromFlag(name + "-", values.Field(i).Addr().Interface())
 		}
 	}
 }
