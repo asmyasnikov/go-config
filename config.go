@@ -179,9 +179,9 @@ func ReadConfigWithSaver(createDefault func() interface{}, applicationName, pack
 		}
 	}()
 
-	readConfigFromEnv("", config)
-
 	readConfigFromFlag("", config)
+
+	readConfigFromEnv("", config)
 
 	return &config, save, nil
 }
